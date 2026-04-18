@@ -40,6 +40,7 @@
                         };
                         nixpkgs.hostPlatform = "x86_64-linux";
                         programs.zsh.enable = true; # configure Zsh integration, recommended (by https://wiki.nixos.org/wiki/Command_Shell and nixopt users.users.<name>.shell) when using Zsh as the default shell
+                        security.sudo.wheelNeedsPassword = false; # allow admins to use `sudo` without having to define account passwords
                         services.openssh.settings = {
                             PasswordAuthentication = false; # security
                             PermitRootLogin = lib.mkForce "no"; # security (override "prohibit-password" value from linode base image)

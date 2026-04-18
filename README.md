@@ -11,5 +11,5 @@ Follow these steps to get a server that's configured as an identical copy of `ca
 5. Edit the configuration to change the kernel to `GRUB2` (**not** `GRUB (Legacy)`) and disable the filesystem/boot helpers
 6. Reboot the linode
 7. Log into LISH as `root` with the password configured in step 3
-8. `nixos-rebuild switch --recreate-lock-file --refresh --no-write-lock-file --flake=github:wurstmineberg/caturday#caturday`
+8. `nixos-rebuild switch --recreate-lock-file --refresh --no-write-lock-file --flake=github:wurstmineberg/caturday`
 9. You should now be able to access caturday via SSH (assuming your user account and SSH pubkey exist in `flake.nix`)
