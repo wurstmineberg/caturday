@@ -35,7 +35,13 @@
                         imports = [
                             "${modulesPath}/virtualisation/linode-config.nix"
                         ];
-                        networking.hostName = "caturday";
+                        networking = {
+                            firewall = {
+                                allowedTCPPorts = [ 80 443 ]; # caddy #TODO (nixpkgs 26.05) replace with services.caddy.openFirewall = true
+                                allowedUDPPorts = [ 443 ]; # caddy #TODO (nixpkgs 26.05) replace with services.caddy.openFirewall = true
+                            };
+                            hostName = "caturday";
+                        };
                         nix = {
                             channel.enable = false; # disallow imperative Nix package management
                             gc = { # prevent Nix from using progressively more disk space over time
@@ -51,9 +57,63 @@
                         nixpkgs.hostPlatform = "x86_64-linux";
                         programs.zsh.enable = true; # configure Zsh integration, recommended (by https://wiki.nixos.org/wiki/Command_Shell and nixopt users.users.<name>.shell) when using Zsh as the default shell
                         security.sudo.wheelNeedsPassword = false; # allow admins to use `sudo` without having to define account passwords
-                        services.openssh.settings = {
-                            PasswordAuthentication = false; # security
-                            PermitRootLogin = lib.mkForce "no"; # security (override "prohibit-password" value from linode base image)
+                        services = {
+                            caddy = {
+                                enable = true; # web server reverse proxying for wurstmineberg.de and subdomains
+                                email = "root@wurstmineberg.de"; # contact for Let's Encrypt
+                                globalConfig = ''
+                                    grace_period 10s # ensure reloads on config changes can't be delayed indefinitely by open connections
+                                '';
+                                virtualHosts = {
+                                    "wurstmineberg.de".extraConfig = ''
+                                        header Access-Control-Allow-Origin *
+                                        header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload"
+                                        encode
+                                        handle /static/* {
+                                            root /opt/git/github.com/wurstmineberg/wurstmineberg.de/main/assets
+                                            file_server
+                                        }
+                                        reverse_proxy :24822
+                                    '';
+                                    "assets.wurstmineberg.de".extraConfig = ''
+                                        header Access-Control-Allow-Origin *
+                                        header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload"
+                                        encode
+                                        root /opt/git/github.com/wurstmineberg/assets.wurstmineberg.de/main
+                                        file_server browse
+                                    '';
+                                    "caturday.wurstmineberg.de".extraConfig = ''
+                                        header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload"
+                                        encode
+                                        redir https://wurstmineberg.de{uri}
+                                    '';
+                                    "graphql.wurstmineberg.de".extraConfig = ''
+                                        header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload"
+                                        encode
+                                        reverse_proxy :24811
+                                    '';
+                                    "mgmt.wurstmineberg.de".extraConfig = ''
+                                        header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload"
+                                        encode
+                                        reverse_proxy :24825
+                                    '';
+                                    "time.wurstmineberg.de".extraConfig = ''
+                                        header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload"
+                                        encode
+                                        root /opt/git/github.com/wurstmineberg/time.wurstmineberg.de/main
+                                        file_server
+                                    '';
+                                    "www.wurstmineberg.de".extraConfig = ''
+                                        header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload"
+                                        encode
+                                        redir https://wurstmineberg.de{uri}
+                                    '';
+                                };
+                            };
+                            openssh.settings = {
+                                PasswordAuthentication = false; # security
+                                PermitRootLogin = lib.mkForce "no"; # security (override "prohibit-password" value from linode base image)
+                            };
                         };
                         system = {
                             autoUpgrade = {
