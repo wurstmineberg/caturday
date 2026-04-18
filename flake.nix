@@ -1,5 +1,15 @@
 {
-    inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    inputs = {
+        nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+        night-device-report = {
+            url = "github:fenhl/night-device-report";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
+        nixos-needsreboot = {
+            url = "github:fenhl/nixos-needsreboot";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
+    };
     outputs = attrs: {
         nixosConfigurations = {
             bootstrap = attrs.nixpkgs.lib.nixosSystem {
@@ -59,6 +69,25 @@
                             };
                             stateVersion = "25.11"; # should NEVER be changed, see Nix option description
                             userActivationScripts.zshrc = "touch .zshrc"; # Prevent the new user dialog in Zsh
+                        };
+                        systemd = {
+                            services.night-device-report = { # system health monitoring via Night (Fenhl's private status monitor system)
+                                after = [ "network-online.target" ];
+                                description = "Night device report";
+                                path = with pkgs; [
+                                    attrs.nixos-needsreboot.packages.${pkgs.stdenv.hostPlatform.system}.default # called during device report
+                                ];
+                                script = "${attrs.night-device-report.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/night-device-report";
+                                serviceConfig.Type = "oneshot";
+                                wants = [ "network-online.target" ];
+                            };
+                            timers.night-device-report = {
+                                after = [ "network-online.target" ];
+                                description = "Night device report timer";
+                                timerConfig.OnCalendar = "*-*-* *:08:19"; # randomly generated time of the hour for the device report
+                                wantedBy = [ "timers.target" ];
+                                wants = [ "network-online.target" ];
+                            };
                         };
                         time.timeZone = "Etc/UTC"; # disallow imperative timezone configuration
                         users = {

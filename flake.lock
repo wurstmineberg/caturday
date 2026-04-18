@@ -1,5 +1,45 @@
 {
   "nodes": {
+    "night-device-report": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1776228979,
+        "narHash": "sha256-aCWzS2EP+EIA7jov9/g53xa69oxdkwUn13BvS2NCbSg=",
+        "owner": "fenhl",
+        "repo": "night-device-report",
+        "rev": "56cfe3164affe01910d9d2c307819ea6d1b57aff",
+        "type": "github"
+      },
+      "original": {
+        "owner": "fenhl",
+        "repo": "night-device-report",
+        "type": "github"
+      }
+    },
+    "nixos-needsreboot": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1764777724,
+        "narHash": "sha256-8LfiG5yfqBaCN3A5+Kl0ixEVbl7X2dFUkIpKrKxsF+I=",
+        "owner": "fenhl",
+        "repo": "nixos-needsreboot",
+        "rev": "5e988a16cf28a06c32eae8ddca333c9b18bfba26",
+        "type": "github"
+      },
+      "original": {
+        "owner": "fenhl",
+        "repo": "nixos-needsreboot",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1776434932,
@@ -18,6 +58,8 @@
     },
     "root": {
       "inputs": {
+        "night-device-report": "night-device-report",
+        "nixos-needsreboot": "nixos-needsreboot",
         "nixpkgs": "nixpkgs"
       }
     }
