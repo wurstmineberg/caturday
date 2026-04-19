@@ -14,7 +14,10 @@
         nixosConfigurations = {
             bootstrap = attrs.nixpkgs.lib.nixosSystem {
                 modules = [
-                    ({ lib, modulesPath, ... }: {
+                    ({ lib, modulesPath, pkgs, ... }: {
+                        environment.systemPackages = with pkgs; [
+                            git # required to switch to the caturday system config
+                        ];
                         imports = [
                             "${modulesPath}/virtualisation/linode-config.nix"
                         ];
@@ -29,6 +32,7 @@
                 modules = [
                     ({ lib, modulesPath, pkgs, ... }: {
                         environment.systemPackages = with pkgs; [
+                            git # required for system updates
                             htop # to debug running processes
                             ncdu # to debug full disks
                         ];
