@@ -6,7 +6,12 @@
             inputs = {
                 nixpkgs.follows = "nixpkgs";
                 darwin.follows = ""; # don't download darwin deps (saves some resources on Linux)
+                home-manager.follows = "home-manager";
             };
+        };
+        home-manager = {
+            url = "github:nix-community/home-manager/release-25.11"; # must be kept in sync with nixpkgs input branch
+            inputs.nixpkgs.follows = "nixpkgs";
         };
         night-device-report = {
             url = "github:fenhl/night-device-report";
@@ -47,6 +52,7 @@
             caturday = attrs.nixpkgs.lib.nixosSystem {
                 modules = [
                     attrs.agenix.nixosModules.default
+                    attrs.home-manager.nixosModules.home-manager
                     {
                         # include all secrets as config entries by filename
                         age.secrets = builtins.listToAttrs
@@ -67,6 +73,60 @@
                             htop # to debug running processes
                             ncdu # to debug full disks
                         ];
+                        home-manager = {
+                            useGlobalPkgs = true; # use the same nixpkgs instance as the rest of the system for consistency
+                            useUserPackages = true; # recommended by home-manager ("This option may become the default value in the future.") and NixOS & Flakes Book
+                            users.fenhl = { config, ... }: {
+                                home.stateVersion = "25.11"; # should NEVER be changed, see https://home-manager-options.extranix.com/ description
+                                programs.zsh = {
+                                    enable = true; # configure additional Zsh integration
+                                    dotDir = "${config.xdg.configHome}/zsh"; # don't pollute home directory with dotfiles
+                                    history.share = false; # separate history per shell session
+                                    initContent = ''
+                                        stty -ixon # disable flow control so ^S can be used for insert_sudo
+                                        # ^S inserts sudo, then inserts -u, then inserts -s
+                                        insert_sudo () {
+                                            if [[ "$BUFFER" == "sudo -su"* ]]; then
+                                                printf "\a"
+                                            elif [[ "$BUFFER" == "sudo -u"* ]]; then
+                                                buffer_suffix="''${BUFFER#sudo -u}" # remove sudo -u prefix
+                                                BUFFER="sudo -su ''${buffer_suffix# }" # remove leading space, if any
+                                                if [[ "$CURSOR" -ge 6 ]]; then
+                                                    CURSOR=$(($CURSOR + 1))
+                                                fi
+                                            elif [[ "$BUFFER" == "sudo " ]]; then
+                                                CURSOR=5
+                                                zle -U -- "-u "
+                                            elif [[ "$BUFFER" == "sudo"* ]]; then
+                                                CURSOR=4
+                                                zle -U " -u "
+                                            else
+                                                BUFFER="sudo $BUFFER"
+                                                CURSOR=$(($CURSOR + 5))
+                                            fi
+                                        }
+                                        zle -N insert_sudo
+                                        bindkey "^S" insert_sudo
+                                    '';
+                                    shellAliases.adu = "sudo nixos-rebuild switch --recreate-lock-file --refresh --no-write-lock-file --flake=github:wurstmineberg/caturday";
+                                    siteFunctions = {
+                                        date = ''
+                                            if [ "$#" -gt 0 ]; then
+                                                command date "$@"
+                                                return $?
+                                            else
+                                                command date -u '+w%V.%u: %Y-%m-%d %H:%M:%S'
+                                                return $?
+                                            fi
+                                        '';
+                                        mkcd = ''
+                                            mkdir -p "$1" && cd "$1"
+                                        '';
+                                    };
+                                    syntaxHighlighting.enable = true;
+                                };
+                            };
+                        };
                         imports = [
                             "${modulesPath}/virtualisation/linode-config.nix"
                         ];
