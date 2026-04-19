@@ -4,7 +4,10 @@ builtins.listToAttrs
             name = "secrets/${name}";
             value.publicKeys = builtins.filter
                 (key: builtins.match "ssh-ed25519 .+" key != null)
-                (builtins.attrValues (import ./authorized-keys.nix));
+                (builtins.attrValues (import ./authorized-keys.nix))
+            ++ [
+                "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIFN9OhRDerFtfKKNTTzxMxWr4Rl/y5b2B7j5zeJZocA" # caturday's host key
+            ];
         })
         ((builtins.attrNames
             (builtins.readDir ./secrets)
