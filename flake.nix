@@ -15,14 +15,23 @@
             bootstrap = attrs.nixpkgs.lib.nixosSystem {
                 modules = [
                     ({ lib, modulesPath, pkgs, ... }: {
-                        environment.systemPackages = with pkgs; [
-                            git # required to switch to the caturday system config
-                        ];
+                        environment = {
+                            loginShellInit = ''
+                                # automatically switch to the full config on first boot
+                                [[ "$(tty)" == /dev/ttyS0 ]] \
+                                    && nixos-rebuild switch --recreate-lock-file --refresh --no-write-lock-file --flake=github:wurstmineberg/caturday \
+                                    && ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
+                            '';
+                            systemPackages = with pkgs; [
+                                git # required to switch to the caturday system config
+                            ];
+                        };
                         imports = [
                             "${modulesPath}/virtualisation/linode-config.nix"
                         ];
                         networking.hostName = "caturday";
                         nixpkgs.hostPlatform = "x86_64-linux";
+                        services.getty.autologinUser = "root"; # automatically log in on startup to continue the bootstrap sequence
                         system.stateVersion = "25.11"; # should NEVER be changed, see Nix option description
                     })
                 ];
