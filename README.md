@@ -16,3 +16,16 @@ Follow these steps to get a server that's configured as an identical copy of `ca
 8. Power on the linode
 9. Wait until the linode has finished switching to the full system config. You can open LISH to monitor the progress.
 10. You can now access the linode via SSH (assuming your user account and SSH pubkey exist in `flake.nix` in this repo). You can open LISH to view the host key fingerprint.
+
+# Adding new secrets
+
+1. Make sure you have an `ssh-ed25519` pubkey in `authorized-keys.nix`
+2. Edit `secrets.nix` to add the filename (e.g. `foo.age`) to the list marked with the comment
+3. `nix run github:ryantm/agenix -- -e secrets/foo.age`
+4. Undo the change to `secrets.nix`
+
+# Editing existing secrets
+
+1. Make sure you have an `ssh-ed25519` pubkey in `authorized-keys.nix`
+2. Make sure an existing admin has run `nix run github:ryantm/agenix -- -r` since your key was added
+3. `nix run github:ryantm/agenix -- -e secrets/foo.age`
