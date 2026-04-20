@@ -213,6 +213,19 @@
                                 PasswordAuthentication = false; # security
                                 PermitRootLogin = lib.mkForce "no"; # security (override "prohibit-password" value from linode base image)
                             };
+                            postgresql = {
+                                enable = true;
+                                ensureDatabases = [
+                                    "wurstmineberg" # database used to store event, member, and wiki data
+                                ];
+                                ensureUsers = [
+                                    {
+                                        ensureDBOwnership = true;
+                                        name = "wurstmineberg";
+                                    }
+                                ];
+                                initialScript = assets/schema.sql;
+                            };
                         };
                         system = {
                             autoUpgrade = {
@@ -258,7 +271,7 @@
                                     "wheel" # enable root access
                                 ];
                                 isNormalUser = true; # set up home directory and shell
-                                openssh.authorizedKeys.keys = builtins.attrValues (builtins.mapAttrs (name: value: "${value} ${name}") (import ./authorized-keys.nix));
+                                openssh.authorizedKeys.keys = builtins.attrValues (builtins.mapAttrs (name: value: "${value} ${name}") (import assets/authorized-keys.nix));
                             };
                         };
                     })
