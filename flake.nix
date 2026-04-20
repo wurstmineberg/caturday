@@ -41,7 +41,10 @@
                         imports = [
                             "${modulesPath}/virtualisation/linode-config.nix"
                         ];
-                        networking.hostName = "caturday";
+                        networking = {
+                            domain = "wurstmineberg.de"; # for FQDN
+                            hostName = "caturday";
+                        };
                         nixpkgs.hostPlatform = "x86_64-linux";
                         services.getty.autologinUser = "root"; # automatically log in on startup to continue the bootstrap sequence
                         system.stateVersion = "25.11"; # should NEVER be changed, see Nix option description
@@ -131,6 +134,7 @@
                             "${modulesPath}/virtualisation/linode-config.nix"
                         ];
                         networking = {
+                            domain = "wurstmineberg.de"; # for FQDN
                             firewall = {
                                 allowedTCPPorts = [ 80 443 ]; # caddy #TODO (nixpkgs 26.05) replace with services.caddy.openFirewall = true
                                 allowedUDPPorts = [ 443 ]; # caddy #TODO (nixpkgs 26.05) replace with services.caddy.openFirewall = true
