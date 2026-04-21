@@ -18,11 +18,13 @@ SET row_security = off;
 
 DROP DATABASE IF EXISTS wurstmineberg;
 --
--- Name: wurstmineberg; Type: DATABASE; Schema: -; Owner: -
+-- Name: wurstmineberg; Type: DATABASE; Schema: -; Owner: wurstmineberg
 --
 
 CREATE DATABASE wurstmineberg WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8';
 
+
+ALTER DATABASE wurstmineberg OWNER TO wurstmineberg;
 
 \connect wurstmineberg
 
@@ -38,14 +40,14 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -56,7 +58,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: calendar; Type: TABLE; Schema: public; Owner: -
+-- Name: calendar; Type: TABLE; Schema: public; Owner: wurstmineberg
 --
 
 CREATE TABLE public.calendar (
@@ -67,8 +69,10 @@ CREATE TABLE public.calendar (
 );
 
 
+ALTER TABLE public.calendar OWNER TO wurstmineberg;
+
 --
--- Name: calendar_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: calendar_id_seq; Type: SEQUENCE; Schema: public; Owner: wurstmineberg
 --
 
 CREATE SEQUENCE public.calendar_id_seq
@@ -79,15 +83,17 @@ CREATE SEQUENCE public.calendar_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.calendar_id_seq OWNER TO wurstmineberg;
+
 --
--- Name: calendar_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: calendar_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: wurstmineberg
 --
 
 ALTER SEQUENCE public.calendar_id_seq OWNED BY public.calendar.id;
 
 
 --
--- Name: people; Type: TABLE; Schema: public; Owner: -
+-- Name: people; Type: TABLE; Schema: public; Owner: wurstmineberg
 --
 
 CREATE TABLE public.people (
@@ -103,8 +109,10 @@ CREATE TABLE public.people (
 );
 
 
+ALTER TABLE public.people OWNER TO wurstmineberg;
+
 --
--- Name: people_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: people_id_seq; Type: SEQUENCE; Schema: public; Owner: wurstmineberg
 --
 
 CREATE SEQUENCE public.people_id_seq
@@ -115,15 +123,17 @@ CREATE SEQUENCE public.people_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.people_id_seq OWNER TO wurstmineberg;
+
 --
--- Name: people_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: people_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: wurstmineberg
 --
 
 ALTER SEQUENCE public.people_id_seq OWNED BY public.people.id;
 
 
 --
--- Name: view_as; Type: TABLE; Schema: public; Owner: -
+-- Name: view_as; Type: TABLE; Schema: public; Owner: wurstmineberg
 --
 
 CREATE TABLE public.view_as (
@@ -132,8 +142,10 @@ CREATE TABLE public.view_as (
 );
 
 
+ALTER TABLE public.view_as OWNER TO wurstmineberg;
+
 --
--- Name: wiki; Type: TABLE; Schema: public; Owner: -
+-- Name: wiki; Type: TABLE; Schema: public; Owner: wurstmineberg
 --
 
 CREATE TABLE public.wiki (
@@ -147,8 +159,10 @@ CREATE TABLE public.wiki (
 );
 
 
+ALTER TABLE public.wiki OWNER TO wurstmineberg;
+
 --
--- Name: wiki_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: wiki_id_seq; Type: SEQUENCE; Schema: public; Owner: wurstmineberg
 --
 
 CREATE SEQUENCE public.wiki_id_seq
@@ -159,15 +173,17 @@ CREATE SEQUENCE public.wiki_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.wiki_id_seq OWNER TO wurstmineberg;
+
 --
--- Name: wiki_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: wiki_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: wurstmineberg
 --
 
 ALTER SEQUENCE public.wiki_id_seq OWNED BY public.wiki.id;
 
 
 --
--- Name: wiki_namespaces; Type: TABLE; Schema: public; Owner: -
+-- Name: wiki_namespaces; Type: TABLE; Schema: public; Owner: wurstmineberg
 --
 
 CREATE TABLE public.wiki_namespaces (
@@ -175,29 +191,31 @@ CREATE TABLE public.wiki_namespaces (
 );
 
 
+ALTER TABLE public.wiki_namespaces OWNER TO wurstmineberg;
+
 --
--- Name: calendar id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: calendar id; Type: DEFAULT; Schema: public; Owner: wurstmineberg
 --
 
 ALTER TABLE ONLY public.calendar ALTER COLUMN id SET DEFAULT nextval('public.calendar_id_seq'::regclass);
 
 
 --
--- Name: people id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: people id; Type: DEFAULT; Schema: public; Owner: wurstmineberg
 --
 
 ALTER TABLE ONLY public.people ALTER COLUMN id SET DEFAULT nextval('public.people_id_seq'::regclass);
 
 
 --
--- Name: wiki id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: wiki id; Type: DEFAULT; Schema: public; Owner: wurstmineberg
 --
 
 ALTER TABLE ONLY public.wiki ALTER COLUMN id SET DEFAULT nextval('public.wiki_id_seq'::regclass);
 
 
 --
--- Name: calendar calendar_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: calendar calendar_pkey; Type: CONSTRAINT; Schema: public; Owner: wurstmineberg
 --
 
 ALTER TABLE ONLY public.calendar
@@ -205,7 +223,7 @@ ALTER TABLE ONLY public.calendar
 
 
 --
--- Name: people people_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: people people_pkey; Type: CONSTRAINT; Schema: public; Owner: wurstmineberg
 --
 
 ALTER TABLE ONLY public.people
@@ -213,7 +231,7 @@ ALTER TABLE ONLY public.people
 
 
 --
--- Name: view_as view_as_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: view_as view_as_pkey; Type: CONSTRAINT; Schema: public; Owner: wurstmineberg
 --
 
 ALTER TABLE ONLY public.view_as
@@ -221,7 +239,7 @@ ALTER TABLE ONLY public.view_as
 
 
 --
--- Name: wiki_namespaces wiki_namespaces_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: wiki_namespaces wiki_namespaces_pkey; Type: CONSTRAINT; Schema: public; Owner: wurstmineberg
 --
 
 ALTER TABLE ONLY public.wiki_namespaces
@@ -229,7 +247,7 @@ ALTER TABLE ONLY public.wiki_namespaces
 
 
 --
--- Name: wiki wiki_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: wiki wiki_pkey; Type: CONSTRAINT; Schema: public; Owner: wurstmineberg
 --
 
 ALTER TABLE ONLY public.wiki
@@ -237,31 +255,10 @@ ALTER TABLE ONLY public.wiki
 
 
 --
--- Name: SCHEMA public; Type: ACL; Schema: -; Owner: -
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
 --
 
 GRANT ALL ON SCHEMA public TO PUBLIC;
-
-
---
--- Name: TABLE calendar; Type: ACL; Schema: public; Owner: -
---
-
-GRANT ALL ON TABLE public.calendar TO wurstmineberg;
-
-
---
--- Name: SEQUENCE calendar_id_seq; Type: ACL; Schema: public; Owner: -
---
-
-GRANT ALL ON SEQUENCE public.calendar_id_seq TO wurstmineberg;
-
-
---
--- Name: TABLE wiki_namespaces; Type: ACL; Schema: public; Owner: -
---
-
-GRANT ALL ON TABLE public.wiki_namespaces TO wurstmineberg;
 
 
 --

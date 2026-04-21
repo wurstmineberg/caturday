@@ -2,7 +2,7 @@ This is the configuration an documentation for `caturday`, the server that will 
 
 # Setup
 
-Follow these steps to get a server that's configured as an identical copy of `caturday`. You will need a backup of the database, which can be created using `sudo -u postgres pg_dump -COc --if-exists wurstmineberg > backup.sql`.
+Follow these steps to get a server that's configured as an identical copy of `caturday`. You will need a backup of the database, which can be created using `sudo -u postgres pg_dump -Cc --if-exists wurstmineberg > backup.sql`.
 
 1. On any [NixOS](https://nixos.org/) system, run `assets/bootstrap.sh` from a clone of this repo
 2. Create a linode from the `caturday` image (the “Nanode 1 GB” plan should work, see <https://wurstmineberg.de/about#hosting> for the current plan)
@@ -16,7 +16,7 @@ Follow these steps to get a server that's configured as an identical copy of `ca
 8. Power on the linode
 9. Wait until the linode has finished switching to the full system config. You can open LISH to monitor the progress.
 10. You can now access the linode via SSH (assuming your user account and SSH pubkey exist in `flake.nix` in this repo). You can open LISH to view the host key fingerprint.
-11. Restore the database from your backup (`cat backup.sql | sudo -u wurstmineberg psql wurstmineberg`)
+11. Restore the database from your backup (`cat backup.sql | sudo -u postgres psql -q`)
 
 # Adding new secrets
 
