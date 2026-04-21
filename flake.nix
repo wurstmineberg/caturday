@@ -264,14 +264,21 @@
                         time.timeZone = "Etc/UTC"; # disallow imperative timezone configuration
                         users = {
                             defaultUserShell = pkgs.zsh; # shell with nicer completion behavior than the default bash
+                            groups.wurstmineberg = {};
                             mutableUsers = false; # disallow imperative configuration of users
-                            users.fenhl = { # configure admin user accounts
-                                description = "Fenhl"; # display name
-                                extraGroups = [
-                                    "wheel" # enable root access
-                                ];
-                                isNormalUser = true; # set up home directory and shell
-                                openssh.authorizedKeys.keys = builtins.attrValues (builtins.mapAttrs (name: value: "${value} ${name}") (import assets/authorized-keys.nix));
+                            users = {
+                                fenhl = {
+                                    description = "Fenhl"; # display name
+                                    extraGroups = [
+                                        "wheel" # enable root access
+                                    ];
+                                    isNormalUser = true; # set up home directory and shell
+                                    openssh.authorizedKeys.keys = builtins.attrValues (builtins.mapAttrs (name: value: "${value} ${name}") (import assets/authorized-keys.nix));
+                                };
+                                wurstmineberg = { # system user running most services
+                                    group = "wurstmineberg";
+                                    isSystemUser = true;
+                                };
                             };
                         };
                     })
