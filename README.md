@@ -2,6 +2,9 @@ This is the configuration an documentation for `caturday`, the server that will 
 
 # Setup
 
+> [!WARNING]
+> Following these steps will create a linode and an image on your Linode account. Please familiarize yourself with Linode's pricing before you start.
+
 Follow these steps to get a server that's configured as an identical copy of `caturday`. You will need a backup of the database, which can be created using `sudo -u postgres pg_dump -Cc --if-exists wurstmineberg > backup.sql`.
 
 1. On any [NixOS](https://nixos.org/) system, run `assets/bootstrap.sh` from a clone of this repo
