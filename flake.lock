@@ -25,6 +25,22 @@
         "type": "github"
       }
     },
+    "flask-view-tree": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1579432115,
+        "narHash": "sha256-ku7V0RBuqRoUPmdqNuKx5B5hWpWFhOTWznf+uL+ELpE=",
+        "owner": "fenhl",
+        "repo": "flask-view-tree",
+        "rev": "a890c8176ef186d89899397c50defc2f577366a6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "fenhl",
+        "repo": "flask-view-tree",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -43,6 +59,22 @@
         "owner": "nix-community",
         "ref": "release-25.11",
         "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "nbt": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1698798963,
+        "narHash": "sha256-FmRvqCyHJpWNjGr+CFXXy/ppeXbOuvXGDCfYlqK0BPE=",
+        "owner": "twoolie",
+        "repo": "NBT",
+        "rev": "69d707b4418edaaa39da4bf14066261600ed7dea",
+        "type": "github"
+      },
+      "original": {
+        "owner": "twoolie",
+        "repo": "NBT",
         "type": "github"
       }
     },
@@ -88,11 +120,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1776434932,
-        "narHash": "sha256-gyqXNMgk3sh+ogY5svd2eNLJ6oEwzbAeaoBrrxD0lKk=",
+        "lastModified": 1776560675,
+        "narHash": "sha256-p68udKWWh7+V4ZPpcMDq0gTHWNZJnr4JPI+kHPPE40o=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "c7f47036d3df2add644c46d712d14262b7d86c0c",
+        "rev": "e07580dae39738e46609eaab8b154de2488133ce",
         "type": "github"
       },
       "original": {
@@ -102,13 +134,66 @@
         "type": "github"
       }
     },
+    "people": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1776798409,
+        "narHash": "sha256-R1T4iFEJnf72gx+ZuI0vNS43d9xEQzf0RM0s9lt6ogs=",
+        "owner": "wurstmineberg",
+        "repo": "people",
+        "rev": "20c8451d60730324f612d4e51dc9a647a7e5d726",
+        "type": "github"
+      },
+      "original": {
+        "owner": "wurstmineberg",
+        "repo": "people",
+        "type": "github"
+      }
+    },
+    "python-anvil": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1593259442,
+        "narHash": "sha256-C/WKVWftPhYM0DzGidUdtjZ+c7QY3AxgGkhUJzVjfxc=",
+        "owner": "wurstmineberg",
+        "repo": "python-anvil",
+        "rev": "14e6a1c4bd478bc4596d8b00624cd204072c7cf0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "wurstmineberg",
+        "repo": "python-anvil",
+        "type": "github"
+      }
+    },
+    "python-class-key": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1536506458,
+        "narHash": "sha256-PkiCDNHVWR5v0sWIYKV0JADk052P/f0AYghPvWJ3qS8=",
+        "owner": "fenhl",
+        "repo": "python-class-key",
+        "rev": "bbdd9b4619be8818563870a4d0bdade3ebbb2a91",
+        "type": "github"
+      },
+      "original": {
+        "owner": "fenhl",
+        "repo": "python-class-key",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "flask-view-tree": "flask-view-tree",
         "home-manager": "home-manager",
+        "nbt": "nbt",
         "night-device-report": "night-device-report",
         "nixos-needsreboot": "nixos-needsreboot",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "people": "people",
+        "python-anvil": "python-anvil",
+        "python-class-key": "python-class-key"
       }
     },
     "systems": {

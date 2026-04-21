@@ -9,9 +9,17 @@
                 home-manager.follows = "home-manager";
             };
         };
+        flask-view-tree = {
+            url = "github:fenhl/flask-view-tree";
+            flake = false;
+        };
         home-manager = {
             url = "github:nix-community/home-manager/release-25.11"; # must be kept in sync with nixpkgs input branch
             inputs.nixpkgs.follows = "nixpkgs";
+        };
+        nbt = {
+            url = "github:twoolie/NBT";
+            flake = false;
         };
         night-device-report = {
             url = "github:fenhl/night-device-report";
@@ -20,6 +28,18 @@
         nixos-needsreboot = {
             url = "github:fenhl/nixos-needsreboot";
             inputs.nixpkgs.follows = "nixpkgs";
+        };
+        people = {
+            url = "github:wurstmineberg/people";
+            flake = false;
+        };
+        python-anvil = {
+            url = "github:wurstmineberg/python-anvil";
+            flake = false;
+        };
+        python-class-key = {
+            url = "github:fenhl/python-class-key";
+            flake = false;
         };
     };
     outputs = attrs: {
@@ -170,7 +190,19 @@
                                 globalConfig = ''
                                     grace_period 10s # ensure reloads on config changes can't be delayed indefinitely by open connections
                                 '';
+                                package = pkgs.caddy.withPlugins {
+                                    hash = "sha256-lESiUxrImNXBjDNBAWWWMqIOqSZwSfYgB2zHOMI4OJ8=";
+                                    plugins = [
+                                        "github.com/wxh06/caddy-uwsgi-transport@v0.0.0-20240117062345-4cfc5af66aa1" # for inner.wurstmineberg.de
+                                    ];
+                                };
                                 virtualHosts = {
+                                    ":24823".extraConfig = ''
+                                        bind 127.0.0.1 [::1]
+                                        reverse_proxy unix/${config.services.uwsgi.runDir}/wurstmineberg.sock {
+                                            transport uwsgi
+                                        }
+                                    '';
                                     "wurstmineberg.de".extraConfig = ''
                                         header Access-Control-Allow-Origin *
                                         header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload"
@@ -233,6 +265,44 @@
                                 ];
                                 initialScript = assets/schema.sql;
                             };
+                            uwsgi = {
+                                enable = true; # for inner.wurstmineberg.de
+                                instance = {
+                                    chdir = "/opt/git/github.com/wurstmineberg/wurstmineberg.de/main";
+                                    file = "wurstmineberg_web/__main__.py";
+                                    gid = "wurstmineberg";
+                                    master = true;
+                                    pythonPackages = self: with self; [
+                                        distutils
+                                        docopt
+                                        dpath
+                                        flask
+                                        flask-bootstrap
+                                        flask-dance
+                                        flask-login
+                                        flask-sqlalchemy
+                                        iso8601
+                                        jsonschema
+                                        mcstatus
+                                        more-itertools
+                                        psycopg2
+                                        pytz
+                                        simplejson
+                                        wrapt
+                                    ];
+                                    pythonpath = [
+                                        attrs.flask-view-tree
+                                        attrs.nbt
+                                        attrs.people
+                                        attrs.python-anvil
+                                        attrs.python-class-key
+                                    ];
+                                    socket = "${config.services.uwsgi.runDir}/wurstmineberg.sock";
+                                    type = "normal";
+                                    uid = "wurstmineberg";
+                                };
+                                plugins = [ "python3" ];
+                            };
                         };
                         system = {
                             autoUpgrade = {
@@ -260,6 +330,10 @@
                                 serviceConfig.Type = "oneshot";
                                 wants = [ "network-online.target" ];
                             };
+                            tmpfiles.settings.gitdir."/opt/git".d = { # ensure /opt/git exists
+                                group = "git";
+                                mode = "0775";
+                            };
                             timers.night-device-report = {
                                 after = [ "network-online.target" ];
                                 description = "Night device report timer";
@@ -271,7 +345,10 @@
                         time.timeZone = "Etc/UTC"; # disallow imperative timezone configuration
                         users = {
                             defaultUserShell = pkgs.zsh; # shell with nicer completion behavior than the default bash
-                            groups.wurstmineberg = {};
+                            groups = {
+                                git = {}; # write access to /opt/git
+                                wurstmineberg = {}; # primary group for wurstmineberg user
+                            };
                             mutableUsers = false; # disallow imperative configuration of users
                             users = {
                                 fenhl = {
