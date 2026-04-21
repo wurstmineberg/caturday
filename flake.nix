@@ -69,7 +69,7 @@
                                 )
                             );
                     }
-                    ({ lib, modulesPath, pkgs, ... }: {
+                    ({ config, lib, modulesPath, pkgs, ... }: {
                         age.secrets."night.json".path = "/etc/xdg/fenhl/night.json"; # required for night-device-report
                         environment.systemPackages = with pkgs; [
                             git # required for system updates
@@ -143,6 +143,9 @@
                         };
                         nix = {
                             channel.enable = false; # disallow imperative Nix package management
+                            extraOptions = ''
+                                !include ${config.age.secrets."nix.conf".path} # workaround for https://github.com/NixOS/nix/issues/6536
+                            '';
                             gc = { # prevent Nix from using progressively more disk space over time
                                 automatic = true;
                                 dates = "06:32"; # randomly generated time of day
