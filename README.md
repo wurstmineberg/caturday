@@ -20,7 +20,6 @@ Follow these steps to get a server that's configured as an identical copy of `ca
 9. Wait until the linode has finished switching to the full system config. You can open LISH to monitor the progress.
 10. You can now access the linode via SSH (assuming your user account and SSH pubkey exist in `flake.nix` in this repo). You can open LISH to view the host key fingerprint.
 11. Restore the database from your backup (`cat backup.sql | sudo -u postgres psql -q`)
-12. Clone <https://github.com/wurstmineberg/wurstmineberg.de> into `/opt/git/github.com/wurstmineberg/wurstmineberg.de/main`
 
 # Adding new secrets
 

@@ -41,6 +41,10 @@
             url = "github:fenhl/python-class-key";
             flake = false;
         };
+        wurstmineberg-web = {
+            url = "github:wurstmineberg/wurstmineberg.de";
+            flake = false;
+        };
     };
     outputs = attrs: {
         nixosConfigurations = {
@@ -208,7 +212,7 @@
                                         header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload"
                                         encode
                                         handle /static/* {
-                                            root /opt/git/github.com/wurstmineberg/wurstmineberg.de/main/assets
+                                            root ${attrs.wurstmineberg-web}/assets
                                             file_server
                                         }
                                         reverse_proxy :24822
@@ -268,7 +272,7 @@
                             uwsgi = {
                                 enable = true; # for inner.wurstmineberg.de
                                 instance = {
-                                    chdir = "/opt/git/github.com/wurstmineberg/wurstmineberg.de/main";
+                                    chdir = attrs.wurstmineberg-web;
                                     file = "wurstmineberg_web/__main__.py";
                                     gid = "wurstmineberg";
                                     master = true;
