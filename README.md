@@ -1,4 +1,4 @@
-This is the configuration an documentation for `caturday`, the server that will be hosting Wurstmineberg's Minecraft servers, website, and other infrastructure in the future.
+This is the configuration and documentation for `caturday`, the server that will be hosting Wurstmineberg's Minecraft servers, website, and other infrastructure in the future.
 
 # Setup
 
