@@ -306,7 +306,7 @@
                         };
                         system = {
                             autoUpgrade = {
-                                enable = true; # automatically keep NixOS up to date
+                                enable = false; #TESTING
                                 allowReboot = true; # automatically reboot for kernel upgrades
                                 dates = "05:32"; # randomly generated time of day
                                 flags = [
