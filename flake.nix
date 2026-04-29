@@ -26,7 +26,7 @@
         nixosConfigurations = {
             bootstrap = attrs.nixpkgs.lib.nixosSystem {
                 modules = [
-                    ({ lib, modulesPath, pkgs, ... }: {
+                    ({ modulesPath, pkgs, ... }: {
                         environment = {
                             loginShellInit = ''
                                 # automatically switch to the full config on first boot
