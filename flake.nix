@@ -219,6 +219,7 @@
                             openssh.settings = {
                                 PasswordAuthentication = false; # security
                                 PermitRootLogin = lib.mkForce "no"; # security (override "prohibit-password" value from linode base image)
+                                PrintLastLog = "no"; # silence last login message
                             };
                             postgresql = {
                                 enable = true;
