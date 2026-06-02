@@ -8,11 +8,11 @@ This is the configuration and documentation for `caturday`, the server that will
 Follow these steps to get a server that's configured as an identical copy of `caturday`. You will need a backup of the database, which can be created using `sudo -u postgres pg_dump -Cc --if-exists wurstmineberg > backup.sql`.
 
 1. On any [NixOS](https://nixos.org/) system, run `assets/bootstrap.sh` from a clone of this repo
-2. Create a linode from the `caturday` image (the “Nanode 1 GB” plan should work, see <https://wurstmineberg.de/about#hosting> for the current plan)
+2. Create a linode from the `caturday` image (the “Linode 2 GB” plan or better is required to avoid NixOS upgrades being OOM killed; see <https://wurstmineberg.de/about#hosting> for the current plan)
 3. Wait for the linode to finish provisioning (ensures configuration is correct)
 4. Delete the image to stop it from continuing to accrue charges
 5. Power off the linode
-6. On the Storage tab, increase swap to 1024 MB
+6. On the Storage tab, increase swap to 2048 MB
 7. On the Configurations tab, edit the default configuration:
     * Change the kernel to `GRUB2` (**not** `GRUB (Legacy)`)
     * Disable the filesystem/boot helpers
