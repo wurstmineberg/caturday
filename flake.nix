@@ -179,7 +179,9 @@
                                             root /opt/git/github.com/wurstmineberg/wurstmineberg.de/main/assets
                                             file_server
                                         }
-                                        reverse_proxy :24822
+                                        reverse_proxy :24822 {
+                                            lb_try_duration 5s
+                                        }
                                     '';
                                     "assets.wurstmineberg.de".extraConfig = ''
                                         header Access-Control-Allow-Origin *
@@ -196,12 +198,16 @@
                                     "graphql.wurstmineberg.de".extraConfig = ''
                                         header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload"
                                         encode
-                                        reverse_proxy :24811
+                                        reverse_proxy :24811 {
+                                            lb_try_duration 5s
+                                        }
                                     '';
                                     "mgmt.wurstmineberg.de".extraConfig = ''
                                         header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload"
                                         encode
-                                        reverse_proxy :24825
+                                        reverse_proxy :24825 {
+                                            lb_try_duration 5s
+                                        }
                                     '';
                                     "time.wurstmineberg.de".extraConfig = ''
                                         header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload"
