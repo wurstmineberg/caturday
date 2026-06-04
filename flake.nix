@@ -281,7 +281,15 @@
                                         "wheel" # enable root access
                                     ];
                                     isNormalUser = true; # set up home directory and shell
-                                    openssh.authorizedKeys.keys = builtins.attrValues (builtins.mapAttrs (name: value: "${value} ${name}") (import assets/authorized-keys.nix));
+                                    openssh.authorizedKeys.keys = builtins.attrValues (builtins.mapAttrs (name: value: "fenhl@${value} ${name}") (import assets/authorized-keys.nix).fenhl);
+                                };
+                                ralokt = {
+                                    description = "ralokt"; # display name
+                                    extraGroups = [
+                                        "wheel" # enable root access
+                                    ];
+                                    isNormalUser = true; # set up home directory and shell
+                                    openssh.authorizedKeys.keys = builtins.attrValues (builtins.mapAttrs (name: value: "ralokt@${value} ${name}") (import assets/authorized-keys.nix).ralokt);
                                 };
                                 wurstmineberg = { # system user running most services
                                     group = "wurstmineberg";
