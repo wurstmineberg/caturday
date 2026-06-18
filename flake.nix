@@ -218,7 +218,7 @@
                                     "www.wurstmineberg.de".extraConfig = ''
                                         header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload"
                                         encode
-                                        redir https://wurstmineberg.de{uri}
+                                        redir https://wurstmineberg.de{uri} 308
                                     '';
                                 };
                             };
