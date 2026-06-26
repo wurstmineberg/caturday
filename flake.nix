@@ -161,7 +161,13 @@
                             ];
                         };
                         nixpkgs.hostPlatform = "x86_64-linux";
-                        programs.zsh.enable = true; # configure Zsh integration, recommended (by https://wiki.nixos.org/wiki/Command_Shell and nixopt users.users.<name>.shell) when using Zsh as the default shell
+                        programs = {
+                            ssh.extraConfig = ''
+                                Host wurstmapberg
+                                    HostName 23.88.54.112
+                            '';
+                            zsh.enable = true; # configure Zsh integration, recommended (by https://wiki.nixos.org/wiki/Command_Shell and nixopt users.users.<name>.shell) when using Zsh as the default shell
+                        };
                         security.sudo.wheelNeedsPassword = false; # allow admins to use `sudo` without having to define account passwords
                         services = {
                             caddy = {
