@@ -162,10 +162,16 @@
                         };
                         nixpkgs.hostPlatform = "x86_64-linux";
                         programs = {
-                            ssh.extraConfig = ''
-                                Host wurstmapberg
-                                    HostName 23.88.54.112
-                            '';
+                            ssh = {
+                                extraConfig = ''
+                                    Host wurstmapberg
+                                        HostName 23.88.54.112
+                                '';
+                                knownHosts.wurstmapberg = {
+                                    extraHostNames = [ "23.88.54.112" ];
+                                    publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINLtzCiGFiS479Iv2JD7ie+q6jKjYhrO8MWvfQiu95rj";
+                                };
+                            };
                             zsh.enable = true; # configure Zsh integration, recommended (by https://wiki.nixos.org/wiki/Command_Shell and nixopt users.users.<name>.shell) when using Zsh as the default shell
                         };
                         security.sudo.wheelNeedsPassword = false; # allow admins to use `sudo` without having to define account passwords
