@@ -1,6 +1,6 @@
 {
     inputs = {
-        nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+        nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
         agenix = {
             url = "github:ryantm/agenix";
             inputs = {
@@ -10,7 +10,7 @@
             };
         };
         home-manager = {
-            url = "github:nix-community/home-manager/release-25.11"; # must be kept in sync with nixpkgs input branch
+            url = "github:nix-community/home-manager/release-26.05"; # must be kept in sync with nixpkgs input branch
             inputs.nixpkgs.follows = "nixpkgs";
         };
         night-device-report = {
